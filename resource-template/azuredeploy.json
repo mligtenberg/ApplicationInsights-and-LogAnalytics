@@ -16,9 +16,8 @@
             "location": "[resourceGroup().location]",
             "properties": {
                 "sku": {
-                    "name": "Free"
-                },
-                "retentionInDays": 10
+                    "name": "PerGB2018"
+                }
             }
         },
         {
