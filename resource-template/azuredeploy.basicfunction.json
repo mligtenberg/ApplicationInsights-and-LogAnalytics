@@ -22,9 +22,6 @@
             "tags": {
                 "displayName": "basicFunctionSetup Application Insights"
             },
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', variables('functionName'))]"
-            ],
             "properties": {
                 "applicationId": "basicFunctionSetup",
                 "application_Type": "web",
@@ -67,9 +64,13 @@
             "apiVersion": "2018-11-01",
             "location": "[resourceGroup().location]",
             "kind": "functionapp",
+            "tags": {
+                "[concat(resourceId('Microsoft.Insights/components', variables('appInsightsName')))]":"Resource"
+            },
             "dependsOn": [
                 "[resourceId('Microsoft.Web/serverfarms', variables('servicePlanName'))]",
-                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]",
+                "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
             ],
             "properties": {
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('servicePlanName'))]",
