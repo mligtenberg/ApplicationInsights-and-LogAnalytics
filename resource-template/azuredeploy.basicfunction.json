@@ -9,7 +9,7 @@
     "variables": {
         "servicePlanName": "[concat('basicfunctionplan', uniqueString(resourceGroup().id))]",
         "functionName": "[concat('basicfunction', uniqueString(resourceGroup().id))]",
-        "storageName": "[concat('basicfunctionstorage', uniqueString(resourceGroup().id))]"
+        "storageName": "[concat('funcstor1', uniqueString(resourceGroup().id))]"
     },
     "resources": [
         {
