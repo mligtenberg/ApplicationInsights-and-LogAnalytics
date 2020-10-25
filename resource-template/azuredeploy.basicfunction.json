@@ -1,0 +1,65 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "mainLogAnalyticsName": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "servicePlanName": "[concat('basicfunctionplan', uniqueString(resourceGroup().id))]",
+        "functionName": "[concat('basicfunction', uniqueString(resourceGroup().id))]",
+        "storageName": "[concat('basicfunctionstorage', uniqueString(resourceGroup().id))]"
+    },
+    "resources": [
+        {
+            "name": "basicfunctionAppInsights",
+            "type": "Microsoft.Insights/components",
+            "apiVersion": "2020-02-02-preview",
+            "location": "[resourceGroup().location]",
+            "kind": "web",
+            "tags": {
+                "displayName": "basicFunctionSetup Application Insights"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', 'webApp1')]"
+            ],
+            "properties": {
+                "applicationId": "basicFunctionSetup",
+                "application_Type": "web",
+                "WorkspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('mainLogAnalyticsName'))]"
+            }
+        },
+        {
+            "name": "[variables('servicePlanName')]",
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2018-02-01",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "Y1"
+            },
+            "tags": {
+                "displayName": "Basic Function Service plan"
+            },
+            "properties": {
+                "name": "basicfunctionplan"
+            }
+        },
+
+        {
+            "name": "[variables('functionName')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2018-11-01",
+            "location": "[resourceGroup().location]",
+            "kind": "functionapp",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('servicePlanName'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]"
+            ],
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('servicePlanName'))]"
+            }
+        }
+    ],
+    "outputs": {}
+}
