@@ -56,7 +56,7 @@
                 "displayName": "Basic Function Service plan"
             },
             "properties": {
-                "name": "basicfunctionplan"
+                "name": "[variables('servicePlanName')]"
             }
         },
 
